@@ -48,11 +48,11 @@ const Payment = () => {
                     "content-Type":"application/json"
                 }
             }
-        // const {data} = await axios.post(
-        //     "api/v1/process/payment",
-        //     paymentData,
-        //     config
-        // )
+        //  const {data} = await axios.post(
+        //      "api/v1/process/payment",
+        //      paymentData,
+        //      config
+        //  )
 
         // const client_secret = data.client_secret
 
