@@ -1,0 +1,59 @@
+first create folders 
+backend and frontend
+next create files in backend app.js and server.js
+install npm init in terminal
+next install express mongoose dotenv -->npm i express mongoose dotenv 
+In app.js
+const express = require("express");//it will acquire express
+
+
+const app = express();//it will use espress
+
+module.exports = app;//it will export express--->it will be imported in server.js
+
+In server.js
+
+const app = require("./app");//it will require app exported from app.js
+
+require('dotenv').config({path:"backend/config.env"});//it will require .env file and gives path to ehere is located
+//for this create .env file(it will store secrets we can use them  in our code)---->inside .env file ->PORT=4000
+
+app.listen(process.env.PORT,()=>{ //to extract values from .env file we use process.env.PORT
+    console.log('server is working on http://localhost:${process.env.PORT}')
+})
+
+In package.json write //in development mode we need some which doesnt require in production(i.e after deployment of application) so we use dev 
+ "start":"node backend/server.js",
+"dev":"nodemon backend/server.js"
+
+
+------------routes-----------
+create folders routes and controllers
+
+create productController.js 
+
+express.json() is used so that when post or put requests execute server can recognise then sa json objects
+
+class ApiFeatures{
+    constructor(query,queryStr){
+        this.query = query;
+        this.queryStr = queryStr;
+
+    }
+
+    search(){
+        const keyword = this.queryStr.keyword?
+        {
+            name:{
+                $regex:this.queryStr.keyword,
+                $options:"i"
+            }
+        }:
+        {};
+
+        this.query=this.query.find({...keyword});
+        return this;
+    }
+}
+
+module.exports=ApiFeatures;
