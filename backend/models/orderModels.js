@@ -18,7 +18,7 @@ const orderSchema = new mongoose.Schema({
             type:String,
             required:true
         },
-        pincode:{
+        pinCode:{
             type:Number,
             required:true
         },
@@ -33,14 +33,15 @@ const orderSchema = new mongoose.Schema({
                 type:String,
                 required:true
             },
-            quantity:{
-                type:Number,
-                required:true
-            },
             price:{
                 type:Number,
                 required:true
             },
+            quantity:{
+                type:Number,
+                required:true
+            },
+           
             image:{
                 type:String,
                 required:true
@@ -50,9 +51,6 @@ const orderSchema = new mongoose.Schema({
                 ref:"Product",
                 required:true
             },
-            
-
-
         }
     ],
     user:{

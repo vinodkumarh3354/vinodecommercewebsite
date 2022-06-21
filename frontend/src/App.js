@@ -1,8 +1,9 @@
 import './App.css';
 import Header from "./component/layout/Header/Header.js";
-import {BrowserRouter as Router,Route} from "react-router-dom";
-import webfont from "webfontloader";
-import React, { useState } from "react";
+import {BrowserRouter as Router,Route, Switch} from "react-router-dom";
+// import {Routes} from "react-router-dom"
+import WebFont from "webfontloader";
+import React, { useEffect, useState } from "react";
 import Footer from "./component/layout/Footer/Footer";
 import Home from "./component/Home/Home";
 import ProductDetails from "./component/Product/ProductDetails"
@@ -26,6 +27,22 @@ import axios from 'axios';
 import Payment from "./component/Cart/Payment.js"
 import {Elements} from "@stripe/react-stripe-js"
 import {loadStripe} from "@stripe/stripe-js"
+import OrderSuccess from "./component/Cart/OrderSuccess"
+import MyOrders from "./component/Order/MyOrders.js"
+import OrderDetails from "./component/Order/OrderDetails.js"
+import Dashboard from "./component/admin/Dashboard.js"
+import ProductList from "./component/admin/ProductList.js"
+import NewProduct from './component/admin/NewProduct';
+import UpdateProduct from './component/admin/UpdateProduct';
+import OrderList from './component/admin/OrderList';
+import ProcessOrder from './component/admin/ProcessOrder';
+import UsersList from './component/admin/UsersList';
+import UpdateUser from './component/admin/UpdateUser';
+import ProductReviews from './component/admin/ProductReviews';
+import Contact from "./component/layout/Contact/Contact";
+import About from './component/layout/About.js/About';
+// import NotFound from './component/layout/Not Found/NotFound';
+
 
 function App() {
 
@@ -36,12 +53,12 @@ function App() {
   async function getStripeApiKey(){
     const {data} = await axios.get("/api/v1/stripeapikey");
 
-    setStripeApiKey(data.setStripeApiKey)
+    setStripeApiKey(data.stripeApiKey)
   }
 
-  React.useEffect(()=>{
+  useEffect(()=>{
 
-    webfont.load({
+    WebFont.load({
       google:{
         families:["Roboto","Droid Sans","Chilanka"]
       }
@@ -54,15 +71,30 @@ function App() {
   
   },[]);
 
+   window.addEventListener("contextmenu", (e) => e.preventDefault());
+
   return (
   <Router>
     <Header />
 
     {isAuthenticated && <UserOptions user={user} />}
+
+    {stripeApiKey && (
+        <Elements stripe={loadStripe(stripeApiKey)}>
+          <ProtectedRoute exact path="/process/payment" component={Payment} />
+        </Elements>
+      )}
+
+    <Switch>
+
     <Route exact path='/' component={Home}/>
     <Route exact path='/product/:id' component={ProductDetails}/>
     <Route exact path='/products' component={Products}/>
     <Route  path='/products/:keyword' component={Products}/>
+
+    <Route exact path="/contact" component={Contact} />
+
+    <Route exact path="/about" component={About} />
 
 
     <Route exact path='/search' component={Search}/>
@@ -81,28 +113,42 @@ function App() {
 
     <Route exact path='/login' component={LoginSignUp}/>
 
-    <ProtectedRoute exact path='/shipping' component={Shipping} />
-
-    <ProtectedRoute exact path='/order/confirm' component={ConfirmOrder} />
-
-
-     
-    
-        <Elements stripe={loadStripe(stripeApiKey)}>
-          <ProtectedRoute exact path="/process/payment" component={Payment} />
-        </Elements>
+    <ProtectedRoute exact path='/shipping' component={Shipping} />    
       
+    <ProtectedRoute exact path='/success' component={OrderSuccess}/> 
+
+    <ProtectedRoute exact path='/orders' component={MyOrders}/> 
+
+        <ProtectedRoute exact path='/order/confirm' component={ConfirmOrder} />
+
+        <ProtectedRoute exact path='/order/:id' component={OrderDetails}/> 
+
+      <ProtectedRoute isAdmin={true} exact path='/admin/dashboard' component={Dashboard}/> 
+
+      <ProtectedRoute isAdmin={true} exact path='/admin/products' component={ProductList}/> 
+
+      <ProtectedRoute isAdmin={true} exact path='/admin/product' component={NewProduct}/> 
+
+      <ProtectedRoute isAdmin={true} exact path='/admin/product/:id' component={UpdateProduct}/> 
+
+      <ProtectedRoute isAdmin={true} exact path='/admin/orders' component={OrderList}/> 
+
+      <ProtectedRoute isAdmin={true} exact path='/admin/order/:id' component={ProcessOrder}/>
+
+      <ProtectedRoute isAdmin={true} exact path='/admin/users' component={UsersList}/> 
+
+      <ProtectedRoute isAdmin={true} exact path='/admin/user/:id' component={UpdateUser}/> 
+
+      <ProtectedRoute isAdmin={true} exact path='/admin/reviews' component={ProductReviews}/> 
 
 
+      {/* <Route
+          component={
+            window.location.pathname === "/process/payment" ? null : NotFound
+          }
+        /> */}
 
-
-
-
-
-
-
-
-
+        </Switch>
     <Footer />
   </Router>
   );

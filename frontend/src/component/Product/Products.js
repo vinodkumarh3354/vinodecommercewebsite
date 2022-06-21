@@ -15,12 +15,12 @@ import Typography from "@material-ui/core/Typography"
 import MetaData from '../layout/MetaData'
 
 const categories =[
+    "Alcohol",
     "Laptop",
-    "Saree",
-    "mobile",
-    "Camera",
     "Tops",
-    "Footwear",
+    "saree",
+    "mobiles",
+   
 ];
 
 

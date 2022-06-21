@@ -50,8 +50,6 @@ exports.myOrders = catchAsyncerrors(async(req,res,next)=>{
 
     const orders = await Order.find({user:req.user._id});
 
-    
-
     res.status(200).json({
         success:true,
         orders
@@ -67,7 +65,7 @@ exports.getAllOrders = catchAsyncerrors(async(req,res,next)=>{
 
     let totalAmount = 0;
 
-    orders.forEach(order=>{
+    orders.forEach((order)=>{
         totalAmount+=order.totalPrice;
     })
 
@@ -90,25 +88,26 @@ exports.updateOrder = catchAsyncerrors(async(req,res,next)=>{
         return next(new ErrorHandler("Order not found with id ",404));
     }
 
-    if(!order.orderStatus==="Delivered"){
+    if(order.orderStatus==="Delivered"){
         return next(new ErrorHandler("oyu have already delivered this order ",404));
     }
 
+    if (req.body.status === "Shipped") {
     order.orderItems.forEach(async(order)=>{
         await updateStock(order.product,order.quantity);
     });
+}
 
     order.orderStatus = req.body.status;
    
     if(req.body.status==="Delivered"){
-        order.deliveresAt=Date.now();
+        order.deliveredAt=Date.now();
 
     }
 
     await order.save({validateBeforeSave:false});
     res.status(200).json({
         success:true,
-        order
     })
 
 });
