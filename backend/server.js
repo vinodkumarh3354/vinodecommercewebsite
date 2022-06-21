@@ -3,9 +3,7 @@ const app = require("./app");
 
 const connectDatabase = require("./database/database")
 
-if(process.env.NODE_ENV!=="PRODUCTION"){
-require('dotenv').config({path:"backend/config.env"});
-}
+
 
 const cloudinary = require("cloudinary")
 
@@ -17,6 +15,12 @@ process.on("uncaughtException",(err)=>{
     process.exit(1);
 })
 
+//config
+
+if(process.env.NODE_ENV !== "PRODUCTION"){
+    require('dotenv').config({path:"backend/config.env"});
+    }
+
 //connecting to database
 connectDatabase();
 
@@ -26,7 +30,7 @@ cloudinary.config({
     api_secret:process.env.CLOUDINARY_API_SECRET
 })
 
-const server = app.listen(process.env.PORT,"0.0.0.0",()=>{
+const server = app.listen(process.env.PORT,()=>{
     console.log(`server is working on http://localhost:${process.env.PORT}`)
 })
 
