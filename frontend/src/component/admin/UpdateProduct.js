@@ -39,10 +39,10 @@ const UpdateProduct = ({ history, match }) => {
 
   const categories = [
     "Alcohol",
-    "Laptop",
-    "Tops",
-    "saree",
-    "mobiles",
+    "Electronics",
+    "Clothing",
+    "Appliances",
+    "Mobiles",
   ];
 
   const productId = match.params.id;
