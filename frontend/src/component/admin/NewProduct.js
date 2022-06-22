@@ -32,7 +32,7 @@ const NewProduct = ({ history }) => {
     "Electronics",
     "Clothing",
     "Appliances",
-    "Mobiles",
+    "Footwear",
 ];
 
   useEffect(() => {

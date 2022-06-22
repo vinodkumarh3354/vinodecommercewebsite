@@ -19,7 +19,7 @@ const categories =[
     "Electronics",
     "Clothing",
     "Appliances",
-    "Mobiles",
+    "Footwear"
    
 ];
 
